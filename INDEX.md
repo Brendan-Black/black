@@ -27,7 +27,7 @@ for the code at hand. Each file states its rule, kind, and exception in its firs
 | Inject through constructors | Convention | Genuinely optional dependencies | [design/constructor-injection](design/constructor-injection.md) |
 | Nulls don't cross boundaries you own | Convention | An announced nullable field; private helpers | [values/nulls](values/nulls.md) |
 | No nullable optional in a constructor | Correctness | None | [values/no-optional-in-constructor](values/no-optional-in-constructor.md) |
-| Name magic strings | Convention | Used once, handled in one place, prose, test data | [values/magic-strings](values/magic-strings.md) |
+| Name magic strings (the build fails on one repeated as an argument) | Convention | Used once, handled in one place, prose, test data | [values/magic-strings](values/magic-strings.md) |
 | Wrap typed strings | Convention | Free text; strings that never leave a function; templated strings | [values/typed-strings](values/typed-strings.md) |
 | Typed strings cost the check, not the wrapper | Convention | Millions held in memory: store the raw form | [values/typed-strings-cost](values/typed-strings-cost.md) |
 | Validate by default; skip only through a named `trusted` | Convention | None | [values/trusted-path](values/trusted-path.md) |

@@ -28,3 +28,48 @@ it fixes all three: typos fail to compile, "find usages" finds every use, and a 
   anything embedded in them that *is* a value, such as an error code.
 - **Test data.** `"John Smith"` in a fixture is data, not a contract. Expected values that mirror a production
   constant should reference it, though, or the test keeps passing after the production value changes.
+
+## What the build checks
+
+Each language's tooling reports a *repeated literal*: the same string value in two literals of one project's non-test
+code (a Rust package, a Gradle project's main source set), listing every place it appears. Each language implements
+the same definition:
+
+- **Identical, or not a match.** Same characters, same case, nothing trimmed or normalised. `"orderId"` matches
+  `"orderId"` and nothing else: not `"orderid"`, and not `"orderIdList"`, which contains it.
+- **Values, not spellings.** Escapes are resolved first, so an escaped character matches the plain one, and a raw
+  string or text block matches a plain literal with the same value.
+
+**Arguments fail the build; nothing else is reported by default.** Each literal is one of three kinds:
+
+| Kind | What it is | A repeated value with one is |
+|---|---|---|
+| Argument | Passed straight to a function, method, constructor or macro: `get("status")`, `List.of("a")`, and the literal side of `"SHIPPED".equals(s)` | an error |
+| Elsewhere | Assignments, returns, comparisons, `case` and match arms | not reported, if it has no argument (a project can opt in) |
+| Definition | In a constant (`const`, `static`, `static final`) or an enum constant's arguments | not reported, if every one is a definition |
+
+Arguments are where magic strings do their damage: a key, a header, a flag, passed into code that trusts it. A value
+that is only ever assigned or matched is usually one place's business, so it isn't reported unless a project asks. Two constants with the same
+value are two names for two concepts that happen to share a spelling (`"metadata"` as a command and as a table name), so
+they aren't reported, but a constant plus a literal is: the literal should use the constant.
+
+**Not counted at all:**
+
+- **Messages.** Prose, by its position: the format string of formatting, printing, logging and panicking calls, the
+  message of an error or exception, of an `expect` or an `assert`. The tool can't read prose for embedded values, so
+  name those yourself.
+- **Labels.** A literal passed straight to a parameter of the project's own code that only ever goes into a message:
+  `check("JSON", token)`, where `check` puts its first argument in an error and nowhere else. A parameter that is also
+  compared, stored or returned, or that goes through another call first (`log(toJson(item))`: a log line can carry
+  data), is a value, and so is any parameter of code outside the project.
+- **No letter.** Punctuation (`", "`, `"\n"`, `"/"`) means nothing on its own, and two numbers (`"1"`, `"404"`) are
+  more often a coincidence than one value used twice.
+- **Whitespace.** A value with a space, a tab or a newline in it. Keys, headers, flags and statuses have none, so it
+  is almost always text for people. A project can opt in to checking these.
+- **Generated code.** Files under the build directory, files marked `@Generated`, and files whose opening comment has a
+  line starting `@generated`.
+- **Annotations and attributes**, which configure tools, and **test code**.
+
+The rule is a convention, so a project can change both levels, for itself or for part of itself (a Rust package, a Java
+package): code you are in that predates the rule [comes first](../principles/consistency.md). How is in each
+language's README.
