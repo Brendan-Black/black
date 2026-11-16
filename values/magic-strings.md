@@ -74,8 +74,10 @@ and as a table name), so they aren't reported, but a constant plus a literal is:
 - **A literal beside its constant: always the full level.** When a constant holds the value and a literal of it is
   passed as an argument where that constant can be named (it is public, or the literal is in its module or package, or
   its own file for a private one), nothing above softens it, not the warning for a lone argument and not proximity:
-  the name exists, so the literal is wrong. A private constant of another class or module is no name the literal could
-  use, and says nothing about whether the two are one concept.
+  the name exists, so the literal is wrong. Only a constant whose whole value is the string counts (an entry in a
+  table is no name for it), and only one the literal could name: a private constant of another class or module, or a
+  binary's constant seen from the library, says nothing about whether the two are one concept, and plays no part in
+  the rules above.
 - **The same comparison in three functions: a warning.** A value never passed as an argument is normally one place's
   business, but compared or matched in three or more functions it is the same check written again each time, such as
   four parsers of `"true" | "yes" | "on"`. Write the check once.
