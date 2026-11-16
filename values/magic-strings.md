@@ -49,9 +49,32 @@ the same definition:
 | Definition | In a constant (`const`, `static`, `static final`) or an enum constant's arguments | not reported, if every one is a definition |
 
 Arguments are where magic strings do their damage: a key, a header, a flag, passed into code that trusts it. A value
-that is only ever assigned or matched is usually one place's business, so it isn't reported unless a project asks. Two constants with the same
-value are two names for two concepts that happen to share a spelling (`"metadata"` as a command and as a table name), so
-they aren't reported, but a constant plus a literal is: the literal should use the constant.
+that is only ever assigned or matched is usually one place's business, so it isn't reported unless a project asks. Two
+constants with the same value are two names for two concepts that happen to share a spelling (`"metadata"` as a command
+and as a table name), so they aren't reported, but a constant plus a literal is: the literal should use the constant.
+
+- **Wrapping isn't passing.** A literal that a value is built from (`Some("hard")`, `Optional.of("hard")`, a variant
+  or a record) is an argument only if that value is passed on. Returned from the one function that maps an enum to
+  its spelling, it is the fix this rule asks for, not a use.
+- **One function, one argument: not reported.** A value whose literals are all in one function (or one other member),
+  with at most one of them an argument: a parser's `startsWith("--x=")` beside its `case "--x="`. They are read together
+  and change together. Two arguments in one function, such as declaring a flag and looking it up, are the typo this
+  rule is for, and stay an error.
+- **Close together: not reported.** A value whose literals are all near each other, however many are arguments, with
+  no constant among them: by default, on one line, such as a parser's `startsWith("--author")` and `value("--author")`.
+  A project sets how near with a *proximity*: a number of lines (`0`, the default, is one line), or `-1` for one file,
+  `-2` for one package (a Rust directory: a module and its submodules), or `-3` for the whole module (a Rust package,
+  a Java source set), which reports nothing. A constant plus a literal is never close: the literal should use the
+  constant.
+- **One argument among other files: a warning.** A value passed as an argument exactly once, whose other uses are all
+  in other files (or in that same function), is at most a warning. It is most often another concept with the same
+  spelling, such as one flag in two commands' parsers. Two or more arguments, or another use elsewhere in the
+  argument's file, keep the full level.
+
+**A limit, not a fix:** no check that matches strings can tell two concepts that share a spelling apart. `"-n"` is
+`--no-checkout` to one command and a count to another, and nothing in the syntax says so. Scoping the check to a file
+would hide them, and also the case that matters most: a producer in one file and its consumer in another. The two
+rules above take most of that noise; a project with a lot of it can widen its proximity or lower its level.
 
 **Not counted at all:**
 
