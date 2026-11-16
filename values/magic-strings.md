@@ -61,11 +61,12 @@ and as a table name), so they aren't reported, but a constant plus a literal is:
   and change together. Two arguments in one function, such as declaring a flag and looking it up, are the typo this
   rule is for, and stay an error.
 - **Close together: not reported.** A value whose literals are all near each other, however many are arguments, with
-  no constant among them: by default, on one line, such as a parser's `startsWith("--author")` and `value("--author")`.
-  A project sets how near with a *proximity*: a number of lines (`0`, the default, is one line), or `-1` for one file,
-  `-2` for one package (a Rust directory: a module and its submodules), or `-3` for the whole module (a Rust package,
-  a Java source set), which reports nothing. A constant plus a literal is never close: the literal should use the
-  constant.
+  no constant among them: by default, in one *statement*, such as a parser's `case "--author" -> value("--author")`. A
+  branch's head (a match arm's pattern and guard, a `case`'s labels, an `if`'s condition) is one statement with the
+  first statement it leads to, and no more: a flag declared and then looked up in one branch is two statements. This is
+  measured by the code, not its lines, so where the formatter breaks them doesn't matter. A project can widen the
+  *proximity* to a function (a Java method), a file, a module (a Java package), or the whole crate (a Java module),
+  which reports nothing. A constant plus a literal is never close: the literal should use the constant.
 - **One argument among other files: a warning.** A value passed as an argument exactly once, whose other uses are all
   in other files (or in that same function), is at most a warning. It is most often another concept with the same
   spelling, such as one flag in two commands' parsers. Two or more arguments, or another use elsewhere in the
@@ -79,20 +80,23 @@ rules above take most of that noise; a project with a lot of it can widen its pr
 **Not counted at all:**
 
 - **Messages.** Prose, by its position: the format string of formatting, printing, logging and panicking calls, the
-  message of an error or exception, of an `expect` or an `assert`. The tool can't read prose for embedded values, so
-  name those yourself.
+  message of an error or exception, of an `expect` or an `assert`. So are the labels of debug output (a field's name in a
+  Rust `debug_struct`), which [debug-strings](debug-strings.md) treats as text for people. The tool can't read prose
+  for embedded values, so name those yourself.
 - **Labels.** A literal passed straight to a parameter of the project's own code that only ever goes into a message:
   `check("JSON", token)`, where `check` puts its first argument in an error and nowhere else. A parameter that is also
   compared, stored or returned, or that goes through another call first (`log(toJson(item))`: a log line can carry
   data), is a value, and so is any parameter of code outside the project.
 - **No letter.** Punctuation (`", "`, `"\n"`, `"/"`) means nothing on its own, and two numbers (`"1"`, `"404"`) are
-  more often a coincidence than one value used twice.
+  more often a coincidence than one value used twice. A backslash and the letter after it (`"\\t"`, an escape spelled
+  out, as in a regular expression) don't count as a letter.
 - **Whitespace.** A value with a space, a tab or a newline in it. Keys, headers, flags and statuses have none, so it
   is almost always text for people. A project can opt in to checking these.
 - **Generated code.** Files under the build directory, files marked `@Generated`, and files whose opening comment has a
   line starting `@generated`.
 - **Annotations and attributes**, which configure tools, and **test code**.
 
-The rule is a convention, so a project can change both levels, for itself or for part of itself (a Rust package, a Java
-package): code you are in that predates the rule [comes first](../principles/consistency.md). How is in each
-language's README.
+The rule is a convention, so a project can change its settings (both levels, whitespace, proximity) for itself or for
+any part of itself, down to a Rust module or a Java package: code you are in that predates the rule
+[comes first](../principles/consistency.md). A value across parts takes the most severe level and the narrowest
+proximity among them. How is in each language's README.
