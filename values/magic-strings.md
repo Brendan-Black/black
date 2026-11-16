@@ -71,11 +71,24 @@ and as a table name), so they aren't reported, but a constant plus a literal is:
   in other files (or in that same function), is at most a warning. It is most often another concept with the same
   spelling, such as one flag in two commands' parsers. Two or more arguments, or another use elsewhere in the
   argument's file, keep the full level.
+- **A literal beside its constant: always the full level.** When a constant holds the value and a literal of it is
+  passed as an argument anywhere, nothing above softens it, not the warning for a lone argument and not proximity: the
+  name exists, so the literal is wrong wherever it is.
+- **The same comparison in three functions: a warning.** A value never passed as an argument is normally one place's
+  business, but compared or matched in three or more functions it is the same check written again each time, such as
+  four parsers of `"true" | "yes" | "on"`. Write the check once.
+
+Errors are always listed. Warnings are counted on one line, with every place on request, so a build's output stays
+short enough to read.
 
 **A limit, not a fix:** no check that matches strings can tell two concepts that share a spelling apart. `"-n"` is
 `--no-checkout` to one command and a count to another, and nothing in the syntax says so. Scoping the check to a file
 would hide them, and also the case that matters most: a producer in one file and its consumer in another. The two
 rules above take most of that noise; a project with a lot of it can widen its proximity or lower its level.
+
+When a value is reported and the uses really are two concepts, name each concept, even though the constants share a
+value: `SAY_TEXT_FILE` and `ESPEAK_TEXT_FILE` are both `"-f"`, and constants with the same value aren't reported. Don't
+merge them into one name to quiet the report: one constant for two concepts is a worse bug than the literal was.
 
 **Not counted at all:**
 
@@ -86,7 +99,9 @@ rules above take most of that noise; a project with a lot of it can widen its pr
 - **Labels.** A literal passed straight to a parameter of the project's own code that only ever goes into a message:
   `check("JSON", token)`, where `check` puts its first argument in an error and nowhere else. A parameter that is also
   compared, stored or returned, or that goes through another call first (`log(toJson(item))`: a log line can carry
-  data), is a value, and so is any parameter of code outside the project.
+  data), is a value, and so is any parameter of code outside the project. Only a call that can reach the project's
+  own code counts: unqualified, on `self` or `this`, or through the project's own type or module. `fs::read(..)` and
+  `list.add(..)` are never the project's, whatever it calls its own functions.
 - **No letter.** Punctuation (`", "`, `"\n"`, `"/"`) means nothing on its own, and two numbers (`"1"`, `"404"`) are
   more often a coincidence than one value used twice. A backslash and the letter after it (`"\\t"`, an escape spelled
   out, as in a regular expression) don't count as a letter.
