@@ -10,9 +10,9 @@ checks) and a `guide/` folder holding only what that language adds, at the same 
 
 ## Why it's split up
 
-So an AI can follow it without reading all of it. The index is the only file that needs to be in context: every rule
-in one line, with its kind, exception, and file. Each file opens with the rule in one paragraph, so reading only that
-paragraph is usually enough, and the rest is there when the rule is contested.
+So an AI can follow it without reading all of it. Only the index needs to be in context: every rule in one line, with
+its exception and file. Each file opens with the rule in one paragraph, which is usually enough. The rest is there
+for when the rule is contested.
 
 ## Using it in a project
 
@@ -36,12 +36,11 @@ For Rust, the second import is `@~/github/rust/black-rust/guide/INDEX.md`.
 
 - One rule per file. The title is the rule, word for word as its row in `INDEX.md`.
 - The folder is the kind: `philosophy/` (flat), or `conventions/` and `correctness/`, which share the topic folders
-  (`design/`, `values/`, `errors/`, `testing/`). Moving a rule between them changes its kind; nothing in the file
-  says it.
+  (`design/`, `values/`, `errors/`, `testing/`). Moving a rule between them changes its kind.
 - The first paragraph states the rule and ends with `Exception: …` or `No exception.` Someone who reads only that
   paragraph should apply the rule correctly.
 - Detail, examples, and the case for the rule come after. A tool's full specification goes in its own reference file
-  (like `conventions/values/magic-strings-check.md`), not in the rule.
+  (like `conventions/values/magic-strings-check.md`).
 - Language-neutral here: pseudocode or none. Code in a real language goes in that language's `guide/`.
 - Keep the voice; cut the repetition. Link instead of restating another rule.
 
@@ -49,5 +48,4 @@ For Rust, the second import is `@~/github/rust/black-rust/guide/INDEX.md`.
 
 A term used by more than one rule, or one a reader might take another way, gets a file in `definitions/`: the title is
 the term, and the first paragraph says what it means here. Add a row to the index's definitions table, and link the
-term where a rule relies on its meaning rather than defining it again. Say what the word means; what to do about it
-belongs in a rule.
+term from the rules that rely on it. Say what the word means; what to do about it belongs in a rule.
