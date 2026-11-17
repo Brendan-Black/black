@@ -1,50 +1,114 @@
 # Black: rule index
 
 My style guide, one rule per file, for any language. Read this index; open a rule's file only when the rule is in play
-for the code at hand. Each file states its rule, kind, and exception in its first paragraph, which is often enough.
+for the code at hand. Each file's title is its row here, and its first paragraph states the rule and its exception,
+which is often enough.
 
-- **Kinds.** *Principle* frames the rest. *Convention* yields to the code you are in. *Correctness* never yields
-  ([why](principles/correctness-vs-convention.md)).
-- **Language specifics** live in each language's repo, at the same path under `guide/`: `black-java/guide/values/typed-strings.md`
-  adds Java to `values/typed-strings.md`. No such file means the rule applies as written. Each language's
-  `guide/INDEX.md` lists its files and the tools that enforce the rules.
-- **"Interface"** means more than a keyword: anything that isn't a concrete worker type. An abstract class, a parent
-  class, a trait, a wire contract. The guide assumes you know dependency injection, its strengths and its limits.
+- **The folder is the kind.** `philosophy/` frames the rest. `conventions/` yields to the code you are in.
+  `correctness/` never yields ([why](philosophy/correctness-vs-convention.md)). The two rule trees are parallel, with
+  the same topic folders inside (`design/`, `values/`, `errors/`, `testing/`).
+- **Language specifics** live in each language's repo, at the same path under `guide/`:
+  `black-java/guide/conventions/values/typed-strings.md` adds Java to `conventions/values/typed-strings.md`. No such
+  file means the rule applies as written. Each language's `guide/INDEX.md` lists its files and the tools that enforce
+  the rules.
+- **Terms** the rules use in a particular sense are defined under [Definitions](#definitions), and linked from the
+  rules that use them.
 - **Layout** (indentation, braces, line length, import order) is not covered: the formatter decides it, and the build
   enforces it.
 
-| Rule | Kind | Main exception | File |
-|---|---|---|---|
-| Follow the code you are in | Principle | Correctness rules don't yield | [principles/consistency](principles/consistency.md) |
-| Correctness doesn't defer to local habit | Principle | None | [principles/correctness-vs-convention](principles/correctness-vs-convention.md) |
-| Make the type say it | Principle | Not every value earns a type | [principles/make-the-type-say-it](principles/make-the-type-say-it.md) |
-| Let the build enforce what a tool can check | Principle | What only review sees | [principles/let-tools-hold-the-line](principles/let-tools-hold-the-line.md) |
-| Interfaces at seams, not everywhere | Convention | None needed where nothing is swapped or promised | [design/seams](design/seams.md) |
-| Don't build abstractions nobody uses | Convention | Marker interfaces, whose user is the reader | [design/no-unused-abstractions](design/no-unused-abstractions.md) |
-| Declare the least interface, keep the identity | Convention | You need a concrete type's guarantee | [design/least-interface](design/least-interface.md) |
-| Don't chain interfaces that aren't definitional | Convention | Chain when the child can't stand alone | [design/no-chained-interfaces](design/no-chained-interfaces.md) |
-| Closed, immutable, least-visible by default | Convention | Loosen when a real reason appears | [design/restrictive-defaults](design/restrictive-defaults.md) |
-| Inject through constructors | Convention | Genuinely optional dependencies | [design/constructor-injection](design/constructor-injection.md) |
-| Nulls don't cross boundaries you own | Convention | An announced nullable field; private helpers | [values/nulls](values/nulls.md) |
-| No nullable optional in a constructor | Correctness | None | [values/no-optional-in-constructor](values/no-optional-in-constructor.md) |
-| Name magic strings (the build fails on one repeated as an argument) | Convention | Used once, handled in one place, prose, test data | [values/magic-strings](values/magic-strings.md) |
-| Wrap typed strings | Convention | Free text; strings that never leave a function; templated strings | [values/typed-strings](values/typed-strings.md) |
-| Typed strings cost the check, not the wrapper | Convention | Millions held in memory: store the raw form | [values/typed-strings-cost](values/typed-strings-cost.md) |
-| Validate by default; skip only through a named `trusted` | Convention | None | [values/trusted-path](values/trusted-path.md) |
-| A type's string form is debug output | Convention | Small, context-free value wrappers | [values/debug-strings](values/debug-strings.md) |
-| No HTML, SQL, or shell from string forms or concatenation | Correctness | A fixed HTML template with every slot escaped | [values/no-markup-from-strings](values/no-markup-from-strings.md) |
-| No secrets or personal data in logs | Correctness | None | [values/secrets-in-logs](values/secrets-in-logs.md) |
-| Design the failure path first | Principle | None | [errors/failure-first](errors/failure-first.md) |
-| Fail early, fail loudly | Convention | None | [errors/fail-early](errors/fail-early.md) |
-| Don't swallow errors | Correctness | Handle to retry, fall back, or translate | [errors/dont-swallow](errors/dont-swallow.md) |
-| Expected outcomes go in the return type | Convention | Only the outcomes callers branch on | [errors/expected-failures](errors/expected-failures.md) |
-| Error messages say what, with which input, expected what | Convention | None | [errors/messages-for-debuggers](errors/messages-for-debuggers.md) |
-| Errors the reader can't trace get a code | Convention | A unique message is enough when the reader has the source | [errors/messages-for-callers](errors/messages-for-callers.md) |
-| Leave nothing half-done | Correctness | None | [errors/nothing-half-done](errors/nothing-half-done.md) |
-| Test the failure path | Convention | None | [errors/test-the-failure-path](errors/test-the-failure-path.md) |
-| Tests are substantive and self-contained | Principle | None | [testing/hermetic](testing/hermetic.md) |
-| Every bug becomes one more test case | Principle | None | [testing/every-bug-a-test](testing/every-bug-a-test.md) |
-| If you can't test it, fix it | Principle | None | [testing/untestable-means-fix](testing/untestable-means-fix.md) |
-| Internal services run for real, external get a pseudo | Convention | Internal ones too heavy to run | [testing/internal-external](testing/internal-external.md) |
-| Pseudos are strict and inspectable | Convention | None | [testing/pseudos](testing/pseudos.md) |
-| New tests are self-contained | Correctness | Labelled smoke tests outside the merge gate | [testing/self-contained](testing/self-contained.md) |
+## Philosophy
+
+| Rule | Main exception | File |
+|---|---|---|
+| Follow the code you are in | Correctness rules don't yield | [philosophy/consistency](philosophy/consistency.md) |
+| Correctness doesn't defer to local habit | None | [philosophy/correctness-vs-convention](philosophy/correctness-vs-convention.md) |
+| Make the type say it | Not every value earns a type | [philosophy/make-the-type-say-it](philosophy/make-the-type-say-it.md) |
+| Let the build enforce what a tool can check | What only review sees | [philosophy/let-tools-hold-the-line](philosophy/let-tools-hold-the-line.md) |
+| Design the failure path first | None | [philosophy/failure-first](philosophy/failure-first.md) |
+| Tests are hermetic: substantive and self-contained | None | [philosophy/hermetic](philosophy/hermetic.md) |
+| Every bug becomes one more test case | None | [philosophy/every-bug-a-test](philosophy/every-bug-a-test.md) |
+| If you can't test it, fix it | None | [philosophy/untestable-means-fix](philosophy/untestable-means-fix.md) |
+
+## Conventions
+
+### Design
+
+| Rule | Main exception | File |
+|---|---|---|
+| Interfaces at seams, not everywhere | None | [conventions/design/seams](conventions/design/seams.md) |
+| Don't build abstractions nobody uses | Marker interfaces, whose user is the reader | [conventions/design/no-unused-abstractions](conventions/design/no-unused-abstractions.md) |
+| Declare the least interface, keep the identity | You need a concrete type's guarantee | [conventions/design/least-interface](conventions/design/least-interface.md) |
+| Don't chain interfaces that aren't definitional | Chain when the child can't stand alone | [conventions/design/no-chained-interfaces](conventions/design/no-chained-interfaces.md) |
+| Closed, immutable, least-visible by default | Loosen when a real reason appears | [conventions/design/restrictive-defaults](conventions/design/restrictive-defaults.md) |
+| Pass dependencies in; don't reach for them | Genuinely optional dependencies | [conventions/design/constructor-injection](conventions/design/constructor-injection.md) |
+
+### Values
+
+| Rule | Main exception | File |
+|---|---|---|
+| Nulls don't cross boundaries you own | An announced nullable field; private helpers | [conventions/values/nulls](conventions/values/nulls.md) |
+| Name magic strings | Used once, handled in one place, prose, test data | [conventions/values/magic-strings](conventions/values/magic-strings.md) |
+| Wrap typed strings | Free text; strings that never leave a function; templated strings | [conventions/values/typed-strings](conventions/values/typed-strings.md) |
+| Typed strings cost the check, not the wrapper | Millions held in memory: store the raw form | [conventions/values/typed-strings-cost](conventions/values/typed-strings-cost.md) |
+| Validate by default; skip only through a named `trusted` | None | [conventions/values/trusted-path](conventions/values/trusted-path.md) |
+| A type's string form is debug output | Small, context-free value wrappers | [conventions/values/debug-strings](conventions/values/debug-strings.md) |
+
+The build's check for magic strings, specified for the language repos that implement it:
+[conventions/values/magic-strings-check](conventions/values/magic-strings-check.md). Not a rule; read it only to
+change or dispute the check.
+
+### Errors
+
+| Rule | Main exception | File |
+|---|---|---|
+| Fail early, fail loudly | None | [conventions/errors/fail-early](conventions/errors/fail-early.md) |
+| Expected outcomes go in the return type | Only the outcomes callers branch on | [conventions/errors/expected-failures](conventions/errors/expected-failures.md) |
+| Write error messages for the person debugging | None | [conventions/errors/messages-for-debuggers](conventions/errors/messages-for-debuggers.md) |
+| Errors the reader can't trace get a code | A unique message is enough when the reader has the source | [conventions/errors/messages-for-callers](conventions/errors/messages-for-callers.md) |
+| Test the failure path | None | [conventions/errors/test-the-failure-path](conventions/errors/test-the-failure-path.md) |
+
+### Testing
+
+| Rule | Main exception | File |
+|---|---|---|
+| Internal services run for real, external get a pseudo | Internal ones too heavy to run | [conventions/testing/internal-external](conventions/testing/internal-external.md) |
+| Pseudos are strict and inspectable | None | [conventions/testing/pseudos](conventions/testing/pseudos.md) |
+
+## Correctness
+
+### Values
+
+| Rule | Main exception | File |
+|---|---|---|
+| No HTML, SQL, or shell from string forms or concatenation | A fixed HTML template with every slot escaped | [correctness/values/no-markup-from-strings](correctness/values/no-markup-from-strings.md) |
+| No secrets or personal data in logs | None | [correctness/values/secrets-in-logs](correctness/values/secrets-in-logs.md) |
+
+### Errors
+
+| Rule | Main exception | File |
+|---|---|---|
+| Don't swallow errors | Handle to retry, fall back, or translate | [correctness/errors/dont-swallow](correctness/errors/dont-swallow.md) |
+| Leave nothing half-done | None | [correctness/errors/nothing-half-done](correctness/errors/nothing-half-done.md) |
+
+### Testing
+
+| Rule | Main exception | File |
+|---|---|---|
+| New tests are self-contained | Labelled smoke tests outside the merge gate | [correctness/testing/self-contained](correctness/testing/self-contained.md) |
+
+## Definitions
+
+| Term | Means | File |
+|---|---|---|
+| Interface | Anything that isn't a concrete worker type: interface, abstract or parent class, trait, wire contract | [definitions/interface](definitions/interface.md) |
+| Marker interface | An empty interface that says what a type is; its user is the reader | [definitions/marker-interface](definitions/marker-interface.md) |
+| Chained interface | One bound into an inheritance tree it doesn't need to make sense alone | [definitions/chained-interface](definitions/chained-interface.md) |
+| Seam | Where one implementation must swap for another, or you promise code you don't control | [definitions/seam](definitions/seam.md) |
+| Boundary, edge | Boundary: anything non-private. Edge: where values enter from something you don't control | [definitions/boundary](definitions/boundary.md) |
+| Magic string | A literal that carries meaning the code depends on | [definitions/magic-string](definitions/magic-string.md) |
+| Typed string | A string that varies but has a shape, or the wrapper type that enforces it | [definitions/typed-string](definitions/typed-string.md) |
+| String form | The string a language produces for a value unasked; canonical when context-free | [definitions/string-form](definitions/string-form.md) |
+| Hermetic | Substantive (could fail for a real reason) and self-contained (depends on your code alone) | [definitions/hermetic](definitions/hermetic.md) |
+| Pseudo | A hand-written stand-in, behind the same interface, for what a test can't run for real | [definitions/pseudo](definitions/pseudo.md) |
+| Internal and external services | Yours, which the meteor that hits you also takes out; or anything you don't own | [definitions/internal-service](definitions/internal-service.md) |
+| Smoke test | A test against a real environment, checking pseudos against what they imitate | [definitions/smoke-test](definitions/smoke-test.md) |
