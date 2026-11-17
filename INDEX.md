@@ -5,8 +5,8 @@ for the code at hand. Each file's title is its row here, and its first paragraph
 which is often enough.
 
 - **The folder is the kind.** `philosophy/` frames the rest. `conventions/` yields to the code you are in.
-  `correctness/` never yields ([why](philosophy/correctness-vs-convention.md)). The two rule trees are parallel, with
-  the same topic folders inside (`design/`, `values/`, `errors/`, `testing/`).
+  `correctness/` never yields. The two rule trees are parallel, with the same topic folders inside (`design/`,
+  `values/`, `errors/`, `testing/`).
 - **Language specifics** live in each language's repo, at the same path under `guide/`:
   `black-java/guide/conventions/values/typed-strings.md` adds Java to `conventions/values/typed-strings.md`. No such
   file means the rule applies as written. Each language's `guide/INDEX.md` lists its files and the tools that enforce
@@ -21,11 +21,8 @@ which is often enough.
 | Rule | Main exception | File |
 |---|---|---|
 | Follow the code you are in | Correctness rules don't yield | [philosophy/consistency](philosophy/consistency.md) |
-| Correctness doesn't defer to local habit | None | [philosophy/correctness-vs-convention](philosophy/correctness-vs-convention.md) |
 | Make the type say it | Not every value earns a type | [philosophy/make-the-type-say-it](philosophy/make-the-type-say-it.md) |
-| Let the build enforce what a tool can check | What only review sees | [philosophy/let-tools-hold-the-line](philosophy/let-tools-hold-the-line.md) |
 | Design the failure path first | None | [philosophy/failure-first](philosophy/failure-first.md) |
-| Tests are hermetic: substantive and self-contained | None | [philosophy/hermetic](philosophy/hermetic.md) |
 | Every bug becomes one more test case | None | [philosophy/every-bug-a-test](philosophy/every-bug-a-test.md) |
 | If you can't test it, fix it | None | [philosophy/untestable-means-fix](philosophy/untestable-means-fix.md) |
 

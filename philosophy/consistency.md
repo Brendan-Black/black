@@ -1,8 +1,7 @@
 # Follow the code you are in
 
-Everything in this guide is a default, not an override. Where the code you are in has an
-established way of doing something, follow it. Exception: correctness rules don't yield
-([correctness-vs-convention](correctness-vs-convention.md)).
+Everything in this guide is a default, not an override. Where the code you are in has an established way of
+doing something, follow it. Exception: correctness rules don't yield.
 
 > **"When in Rome, do as the Romans do"** - Saint Ambrose
 >
