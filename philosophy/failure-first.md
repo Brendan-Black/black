@@ -1,4 +1,3 @@
-# Design the failure path first
 # Error-Oriented Programming
 
 Design the failure path as a first-class concern, not as the `catch` block you fill in at the end. No exception.
