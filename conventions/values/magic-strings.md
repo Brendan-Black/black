@@ -30,7 +30,9 @@ a name, typos fail to compile, "find usages" finds every use, and a rename chang
 ## Two concepts, one spelling
 
 Name each concept, even when the values match: `SAY_TEXT_FILE` and `ESPEAK_TEXT_FILE` are both `"-f"`. Don't merge
-them to save a line or quiet the build: one constant for two concepts is a worse bug than the literal was.
+them to save a line or quiet the build: one constant for two concepts is a worse bug than the literal was. When
+the build reports a literal beside a constant of the same value, check what that constant names before using it: the
+build sees the spelling, not the concept.
 
 ## What the build checks
 

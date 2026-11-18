@@ -49,7 +49,11 @@ These adjust the level:
   passed as an argument where that constant can be named (it is public, or the literal is in its module, or in its
   own file for a private one), nothing above softens it: the name exists, so the literal is wrong. Only a constant
   whose whole value is the string counts (an entry in a table is no name for it), and only one the literal could name:
-  another module's private constant, or an executable's constant seen from its library, plays no part.
+  another module's private constant, or an executable's constant seen from its library, plays no part. The
+  report names each such constant, and says it is the fix only if it names the same concept. A constant of another
+  concept that shares the spelling (`attributes::DIFF`, the attribute, beside `"diff"` as a command name) still makes
+  the literal an error, and the fix is a name of its own, not the other concept's: reaching for the constant the tool
+  points at is the merge [two concepts, one spelling](magic-strings.md#two-concepts-one-spelling) forbids.
 - **The same comparison in three functions: a warning.** A value never passed as an argument but compared or matched
   in three or more functions is the same check written again each time, such as four parsers of
   `"true" | "yes" | "on"`. Write the check once.
