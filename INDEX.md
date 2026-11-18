@@ -33,7 +33,7 @@ which is often enough.
 | Rule | Main exception | File |
 |---|---|---|
 | Interfaces at seams, not everywhere | None | [conventions/design/seams](conventions/design/seams.md) |
-| Don't build abstractions nobody uses | Marker interfaces, whose user is the reader | [conventions/design/no-unused-abstractions](conventions/design/no-unused-abstractions.md) |
+| Don't build abstractions nobody uses | Tagging interfaces, whose user is the reader | [conventions/design/no-unused-abstractions](conventions/design/no-unused-abstractions.md) |
 | Declare the least interface, keep the identity | You need a concrete type's guarantee | [conventions/design/least-interface](conventions/design/least-interface.md) |
 | Don't chain interfaces that aren't definitional | Chain when the child can't stand alone | [conventions/design/no-chained-interfaces](conventions/design/no-chained-interfaces.md) |
 | Closed, immutable, least-visible by default | Loosen when a real reason appears | [conventions/design/restrictive-defaults](conventions/design/restrictive-defaults.md) |
@@ -98,7 +98,7 @@ change or dispute the check.
 | Term | Means | File |
 |---|---|---|
 | Interface | Anything that isn't a concrete worker type: interface, abstract or parent class, trait, wire contract | [definitions/interface](definitions/interface.md) |
-| Marker interface | An empty interface that says what a type is; its user is the reader | [definitions/marker-interface](definitions/marker-interface.md) |
+| Tagging interface | An empty interface that says what a type is; its user is the reader | [definitions/tagging-interface](definitions/tagging-interface.md) |
 | Chained interface | One bound into an inheritance tree it doesn't need to make sense alone | [definitions/chained-interface](definitions/chained-interface.md) |
 | Seam | Where one implementation must swap for another, or you promise code you don't control | [definitions/seam](definitions/seam.md) |
 | Boundary, edge | Boundary: anything non-private. Edge: where values enter from something you don't control | [definitions/boundary](definitions/boundary.md) |

@@ -17,8 +17,8 @@ Write the shape down as a wrapper whose only constructor validates: `reserve(Sku
 - **The rule has one home.** "Find usages" shows everywhere SKUs flow, and a format change is one edit.
 - **Signatures explain themselves.** No doc comment needed to say what the strings are.
 
-A wrapper's string form may be its canonical value ([debug strings](debug-strings.md)). A [marker
-interface](../../definitions/marker-interface.md) (`TypedString`) on each is not an [unused
+A wrapper's string form may be its canonical value ([debug strings](debug-strings.md)). A [tagging
+interface](../../definitions/tagging-interface.md) (`TypedString`) on each is not an [unused
 abstraction](../design/no-unused-abstractions.md): "find implementations" gives a catalogue of every shaped value in
 the system.
 

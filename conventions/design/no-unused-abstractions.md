@@ -1,7 +1,7 @@
 # Don't build abstractions nobody uses
 
 Interfaces are important; generality is not. **An abstraction nobody uses is useless by definition**, and every
-reader still has to understand it. Exception: [marker interfaces](../../definitions/marker-interface.md), whose user
+reader still has to understand it. Exception: [tagging interfaces](../../definitions/tagging-interface.md), whose user
 is the reader.
 
 The usual offenders:
