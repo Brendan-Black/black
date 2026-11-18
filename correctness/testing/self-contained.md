@@ -21,7 +21,8 @@ and why. Missing one because the neighbouring tests do is not. Converting an exi
   only makes the race less likely. A timeout on the wait is fine; it is there to fail the test.
 
 Smoke tests against real environments are fine when labelled and kept out of the suite that gates a merge. They check
-your [pseudos](../../conventions/testing/pseudos.md) against the services they imitate; a pseudo is only as good as your understanding of the real thing.
+your [pseudos](../../conventions/testing/pseudos.md) against the services they imitate; a pseudo is only as good as your
+understanding of the real thing.
 
 A fully hermetic test of a database-backed web app has a realistic seed schema and data, a database container
 initialized from that seed, and real reads and writes to it, triggered by deterministic network requests against the
