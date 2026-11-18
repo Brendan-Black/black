@@ -104,8 +104,6 @@ change or dispute the check.
 | Boundary, edge | Boundary: anything non-private. Edge: where values enter from something you don't control | [definitions/boundary](definitions/boundary.md) |
 | Magic string | A literal that carries meaning the code depends on | [definitions/magic-string](definitions/magic-string.md) |
 | Typed string | A string that varies but has a shape, or the wrapper type that enforces it | [definitions/typed-string](definitions/typed-string.md) |
-| String form | The string a language produces for a value unasked; canonical when context-free | [definitions/string-form](definitions/string-form.md) |
 | Hermetic | Substantive (could fail for a real reason) and self-contained (depends on your code alone) | [definitions/hermetic](definitions/hermetic.md) |
 | Pseudo | A hand-written stand-in, behind the same interface, for what a test can't run for real | [definitions/pseudo](definitions/pseudo.md) |
 | Internal and external services | Yours, which the meteor that hits you also takes out; or anything you don't own | [definitions/internal-service](definitions/internal-service.md) |
-| Smoke test | A test against a real environment, checking pseudos against what they imitate | [definitions/smoke-test](definitions/smoke-test.md) |
